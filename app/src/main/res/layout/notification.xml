@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/load" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_63sdp"
+            android:fontFamily="@font/ko2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Anh làm gì sai???"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_20sdp"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_36sdp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_pre"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="#00FFFFFF"
+                android:scaleType="center"
+                android:src="@drawable/bg_previous" />
+
+
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="#00FFFFFF"
+                android:scaleType="center"
+                android:src="@drawable/ic_play_arrow_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="#00FFFFFF"
+                android:scaleType="center"
+                android:src="@drawable/bg_next" />
+
+            <ImageButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="#00FFFFFF"
+                android:scaleType="center"
+                android:src="@drawable/bg_cancel" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

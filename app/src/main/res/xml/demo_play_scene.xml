@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+       <KeyFrameSet>
+       </KeyFrameSet>
+        <OnSwipe motion:touchAnchorId="@+id/cl_top" />
+        <OnClick motion:targetId="@+id/cl_top" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/cl_top"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent" />
+        <Constraint
+            android:elevation="@dimen/search_bar_elevation"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/player_view"
+            android:layout_marginEnd="0dp" />
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:id="@+id/animation_view"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_editor_absoluteY="809dp" />
+        <Constraint
+            android:layout_height="56dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:id="@+id/animation_view"
+            motion:layout_editor_absoluteX="0dp"
+            motion:layout_constraintBottom_toBottomOf="@+id/player_view" />
+        <Constraint
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            motion:layout_editor_absoluteY="452dp"
+            android:alpha="1" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/player_view"
+            android:elevation="@dimen/search_bar_elevation"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cl_top"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            motion:layout_editor_absoluteY="452dp"
+            android:id="@+id/animation_view"
+            motion:layout_constraintBottom_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            motion:layout_editor_absoluteY="452dp"
+            android:alpha="0" />
+    </ConstraintSet>
+</MotionScene>

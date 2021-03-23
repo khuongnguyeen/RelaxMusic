@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue_bottom">#304FFE</color>
+    <color name="indigo_600">#3949AB</color>
+    <color name="indigo_100">#C5CAE9</color>
+    <color name="khuong">#021f3c</color>
+    <color name="khuong_200">#41b3ec</color>
+    <color name="khuong_00">#205f81</color>
+    <color name="khuong_1">#90caf9</color>
+    <color name="khuong_2">#80deea</color>
+    <color name="khuong_3">#b39ddb</color>
+    <color name="khuong_4">#f48fb1</color>
+    <color name="red">#f44336</color>
+    <color name="pink">#e91e63</color>
+    <color name="purple">#9c27b0</color>
+    <color name="color_player">#99175593</color>
+    <color name="bg_color">#1B000000</color>
+    <color name="color_clock">#05d9c6</color>
+    <color name="color_blue">#00a645</color>
+    <color name="color_white">#E0E0E0</color>
+    <color name="color_black">#212121</color>
+
+    <color name="bg_layout">#A736236D</color>
+    <color name="bg_button">#9457FF</color>
+
+
+
+    <color name="windowBackground">#fafafa</color>
+    <color name="dialogsBackground">@color/windowBackground</color>
+    <color name="widgetsColor">#212121</color>
+    <color name="systemBarsColor">#bfbfbf</color>
+
+    <color name="shuffleFabTint">@color/windowBackground</color>
+
+    <color name="swipeActionDeleteColor">#ffebee</color>
+    <color name="swipeActionAddColor">#e8f5e9</color>
+</resources>
