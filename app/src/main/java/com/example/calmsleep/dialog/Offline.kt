@@ -2,6 +2,7 @@ package com.example.calmsleep.dialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.calmsleep.R
 import com.example.calmsleep.adapter.OfflineAdapter
 import com.example.calmsleep.application.MyApp
+import com.example.calmsleep.broadcast.NotificationActionService
 import com.example.calmsleep.databinding.ActivityOfflineBinding
 import com.example.calmsleep.model.MusicOnlineMp3
 import com.example.calmsleep.model.MusicUtils
@@ -39,6 +41,9 @@ class Offline(private val str: String, val list: MutableList<MusicOnlineMp3>) :
     }
 
     private fun setData(path: String) {
+        val intent =
+            Intent(context, NotificationActionService::class.java).setAction("CANCEL")
+        context!!.sendBroadcast(intent)
         mp?.release()
         mp = MediaPlayer()
         mp?.setOnErrorListener(object : MediaPlayer.OnErrorListener {
@@ -89,11 +94,15 @@ class Offline(private val str: String, val list: MutableList<MusicOnlineMp3>) :
                 } else {
                     mp?.start()
                     binding?.btnPlay?.setImageResource(R.drawable.baseline_pause_white_48dp)
+                    val intent =
+                        Intent(context, NotificationActionService::class.java).setAction("CANCEL")
+                    context!!.sendBroadcast(intent)
                 }
             }else{
                 initPermission(0)
             }
         }
+        binding?.textView4?.text = str
         binding?.btnNext?.setOnClickListener {
             if (MyApp.getMusicDownLoad().size == 0) return@setOnClickListener
             if (current == MyApp.getMusicDownLoad().size-1){

@@ -105,21 +105,8 @@ class AlarmFragment : Fragment() {
         }
 
         binding?.ivDownload?.setOnClickListener {
-            MyApp.getMusicDownLoad().clear()
-            MyApp.getMusicDownLoad().addAll(MyApp.getDB().getDownload())
-            val data = mutableListOf<DataMusic>()
-            for (i in MyApp.getMusicDatabase()) {
-                for (j in MyApp.getMusicDownLoad()) {
-                    if (i.id == j.musicId) {
-                        data.add(i)
-                    }
-                }
-            }
-            if (data.size == 0) {
-                Toast.makeText(context, "The list is empty", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            (activity as MainActivity).callDialogChill("Download", data)
+            val v = Offline("Relax Music",  MyApp.getMusicDownLoad())
+            v.show(childFragmentManager, v.tag)
 
             binding?.ivDownload?.isEnabled = false
             val enableButton = Runnable {  binding?.ivDownload?.isEnabled = true }

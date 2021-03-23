@@ -19,21 +19,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:src="@drawable/no_internet"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ko2"
-            android:text="You are Offline!"
+            android:text="Relax Music"
             android:textColor="@color/white"
             android:textSize="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,31 +32,17 @@
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="@dimen/_250sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/ko2"
-            android:text="Please check your internet connection and try again"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/ko2"
             android:text="Downloaded Sleep Sounds"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc"
@@ -115,16 +92,12 @@
                 android:scaleType="center"
                 android:src="@drawable/baseline_skip_next_white_48dp" />
 
-            <TextView
+            <ImageButton
                 android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_36sdp"
                 android:layout_height="@dimen/_36sdp"
                 android:background="#00FFFFFF"
-                android:text="GO ONLINE"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:src="@drawable/baseline_close_white_24dp"
                 android:scaleType="center"/>
 
 
