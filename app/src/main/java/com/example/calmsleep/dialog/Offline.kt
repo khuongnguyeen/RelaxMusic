@@ -127,6 +127,7 @@ class Offline(private val str: String, val list: MutableList<MusicOnlineMp3>) :
 
         binding?.btnCancel?.setOnClickListener {
             dismiss()
+            mp?.stop()
         }
 
         return binding?.root
