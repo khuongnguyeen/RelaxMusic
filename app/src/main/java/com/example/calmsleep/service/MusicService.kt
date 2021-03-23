@@ -1,21 +1,24 @@
 package com.example.calmsleep.service
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Binder
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import com.example.calmsleep.R
@@ -34,11 +37,6 @@ class MusicService : LifecycleService() {
     private var count: CountDownTimer? = null
     private var currentIndex = -1
 
-    override fun onCreate() {
-        super.onCreate()
-
-
-    }
 
 
     @SuppressLint("InlinedApi")
@@ -82,10 +80,8 @@ class MusicService : LifecycleService() {
                 e.printStackTrace()
             }
         }
-
         thread.start()
     }
-
 
     fun playStart(id: String) {
         val intent = Intent(applicationContext, NotificationActionService::class.java).setAction("PLAYING")
@@ -140,7 +136,6 @@ class MusicService : LifecycleService() {
                     createNotification(MyApp.getMusicDatabase(), R.drawable.ic_pause_black_24dp)
                 }
                 "CANCEL" -> MainActivity.service?.cancel()
-
                 "PLAY_START" -> {
                     createNotification(MyApp.getMusicDatabase(), R.drawable.ic_pause_black_24dp)
                     playStart(MyApp.ID)
@@ -151,6 +146,10 @@ class MusicService : LifecycleService() {
 
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     private fun startTimer() {

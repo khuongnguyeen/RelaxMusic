@@ -71,7 +71,7 @@ class DataBaseManager(private var context: Context) {
 
     fun insertDownload(
         songName: String,
-        linkMusic: String,
+        mp3_thumbnail_b: String,
         pathOnline: String,
         idMusic: String,
         idAlbum: String
@@ -79,7 +79,7 @@ class DataBaseManager(private var context: Context) {
         openDatabase()
         val contentValues = ContentValues()
         contentValues.put("songName", songName)
-        contentValues.put("linkMusic", linkMusic)
+        contentValues.put("mp3_thumbnail_b", mp3_thumbnail_b)
         contentValues.put("pathOnline", pathOnline)
         contentValues.put("music_id", idMusic)
         contentValues.put("album_id", idAlbum)
@@ -95,7 +95,7 @@ class DataBaseManager(private var context: Context) {
         cursor.moveToFirst()
         val indexId = cursor.getColumnIndex("id")
         val indexSongName = cursor.getColumnIndex("songName")
-        val indexLinkMusic = cursor.getColumnIndex("linkMusic")
+        val indexLinkMusic = cursor.getColumnIndex("mp3_thumbnail_b")
         val indexPathOnline = cursor.getColumnIndex("pathOnline")
         val indexMusicId = cursor.getColumnIndex("music_id")
         val indexTAlbumId = cursor.getColumnIndex("album_id")
@@ -112,7 +112,7 @@ class DataBaseManager(private var context: Context) {
                     musicId = musicId,
                     albumId = albumId,
                     songName = songName,
-                    linkMusic = linkMusic,
+                    mp3_thumbnail_b = linkMusic,
                     pathOnline = pathOnline
                 )
             )
@@ -127,7 +127,7 @@ class DataBaseManager(private var context: Context) {
         val sql = "CREATE TABLE IF NOT EXISTS download ( " +
                 "id INTEGER NOT NULL UNIQUE, " +
                 "songName TEXT  NOT NULL, " +
-                "linkMusic TEXT  NOT NULL, " +
+                "mp3_thumbnail_b TEXT  NOT NULL, " +
                 "pathOnline TEXT  NOT NULL, " +
                 "music_id TEXT  NOT NULL, " +
                 "album_id TEXT  NOT NULL, " +

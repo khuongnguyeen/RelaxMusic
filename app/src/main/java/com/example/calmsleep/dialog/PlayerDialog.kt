@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.player_bottom_sheet.*
 import java.util.*
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "NAME_SHADOWING")
 class PlayerDialog : BottomSheetDialogFragment() {
 
     private var bindingPlayer: PlayerBottomSheetBinding?=null
@@ -34,10 +34,7 @@ class PlayerDialog : BottomSheetDialogFragment() {
     var runnable: Runnable? = null
     var handler: Handler? = null
 
-
-
     override fun onStart() {
-        Log.e("PlayDialog", "________ onStart")
         super.onStart()
         val sheetContainer = requireView().parent as? ViewGroup ?: return
         sheetContainer.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -47,19 +44,15 @@ class PlayerDialog : BottomSheetDialogFragment() {
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCanceledOnTouchOutside(true)
         dialog.onSaveInstanceState()
     }
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-        Log.e("PlayDialog", "________ onCreateDialog")
         val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         bottomSheetDialog.setOnShowListener {
             val bottomSheet = bottomSheetDialog
                 .findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-
             if (bottomSheet != null) {
                 val behavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(bottomSheet)
                 behavior.isDraggable = true
@@ -83,12 +76,13 @@ class PlayerDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         handler = Handler()
-        Log.e("PlayDialog", "________onCreateView")
         context?.registerReceiver(broadcastReceiver, IntentFilter("TRACKS_TRACKS"))
         bindingPlayer = PlayerBottomSheetBinding.inflate(inflater, container, false)
         val linkImage = arguments?.getString("link")
         var checkFavourites = arguments?.getBoolean("favourites", false)
+        var checkDownload = arguments?.getBoolean("download", false)
         if (checkFavourites!!) bindingPlayer?.ivIconFavourites?.setImageResource(R.drawable.heart_full)
+        if (checkDownload!!) bindingPlayer?.ivIconDownload?.setImageResource(R.drawable.baseline_file_download_done_white_48dp)
         checkFavourites = false
         if (MyApp.LOOPING) {
             bindingPlayer?.ivIconLoop?.setImageResource(R.drawable.replay_ic)
@@ -118,14 +112,13 @@ class PlayerDialog : BottomSheetDialogFragment() {
             bindingPlayer?.ivIconPlay?.setImageResource(R.drawable.play_ic)
             bindingPlayer?.ivMusicImg!!.animate().cancel()
         }
-        val enableButton = Runnable { bindingPlayer?.tvTimeEnd?.text = MusicUtils.secondsToTimer(
+        val enableButton = Runnable {
+            bindingPlayer?.tvTimeEnd?.text = MusicUtils.secondsToTimer(
             MyApp.getManager().getDuration()
         ) }
         Handler().postDelayed(enableButton, 1000)
-
         bindingPlayer?.tvSongName?.text = MyApp.getMusicDatabase()[MusicUtils.getPosition(MyApp.ID)].mp3_title
         bindingPlayer?.tvArtist?.text = MyApp.getMusicDatabase()[MusicUtils.getPosition(MyApp.ID)].mp3_artist
-
         Glide.with(this)
             .load(linkImage)
             .into(bindingPlayer?.ivMusicImg!!)
@@ -134,9 +127,7 @@ class PlayerDialog : BottomSheetDialogFragment() {
             val intent = Intent(context, NotificationActionService::class.java).setAction("PLAY")
             context!!.sendBroadcast(intent)
         }
-
         bindingPlayer?.ivDismiss?.setOnClickListener { dismiss() }
-
         bindingPlayer?.ivIconLoop?.setOnClickListener {
             if (MyApp.LOOPING) {
                 MyApp.getManager().setLooping(false)
@@ -150,16 +141,18 @@ class PlayerDialog : BottomSheetDialogFragment() {
                 bindingPlayer?.ivIconLoop?.setImageResource(R.drawable.replay_ic)
             }
         }
-
         bindingPlayer?.ivIconAlarm?.setOnClickListener {
             val v = SetAlarmPop()
             v.show((activity as MainActivity).supportFragmentManager, v.tag)
         }
-
+        bindingPlayer?.data = MyApp.getMusicViewModel()
         bindingPlayer?.ivIconDownload?.setOnClickListener {
             MainActivity.service!!.downLoadMusic()
+            val enableButton = Runnable {
+                bindingPlayer?.ivIconDownload?.setImageResource(R.drawable.baseline_file_download_done_white_48dp)
+                }
+            Handler().postDelayed(enableButton, 1000)
         }
-
         bindingPlayer?.ivIconFavourites?.setOnClickListener {
             check = false
             for (i in MyApp.getFavourites()) {
@@ -183,6 +176,10 @@ class PlayerDialog : BottomSheetDialogFragment() {
                 Log.e("okKO", "${MyApp.getFavourites()}")
                 if (MyApp.AUTODOWNLOAD) {
                     MainActivity.service!!.downLoadMusic()
+                    val enableButton = Runnable {
+                        bindingPlayer?.ivIconDownload?.setImageResource(R.drawable.baseline_file_download_done_white_48dp)
+                    }
+                    Handler().postDelayed(enableButton, 1000)
                 }
                 check = true
             }
@@ -219,7 +216,6 @@ class PlayerDialog : BottomSheetDialogFragment() {
         editor.apply()
     }
 
-
     private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.extras!!.getString("actionName")!!) {
@@ -246,7 +242,6 @@ class PlayerDialog : BottomSheetDialogFragment() {
     }
 
     fun upBroadcast(){
-
         bindingPlayer?.ivIconPlay?.setImageResource(R.drawable.pause_ic)
         runnable = Runnable {
             bindingPlayer?.ivMusicImg!!.animate()
@@ -289,7 +284,6 @@ class PlayerDialog : BottomSheetDialogFragment() {
                 MyApp. mTimeLeftInMillis = millisUntilFinished
                 updateCountDownText()
             }
-
             override fun onFinish() {
                 MyApp.mTimerRunning = false
             }
@@ -313,6 +307,5 @@ class PlayerDialog : BottomSheetDialogFragment() {
         super.onDestroy()
         bindingPlayer = null
     }
-
 
 }

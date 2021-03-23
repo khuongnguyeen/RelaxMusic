@@ -7,9 +7,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.*
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.*
+import android.util.Log
 import android.view.*
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,12 +23,15 @@ import com.example.calmsleep.R
 import com.example.calmsleep.application.MyApp
 import com.example.calmsleep.broadcast.NotificationActionService
 import com.example.calmsleep.databinding.ActivityMainBinding
+import com.example.calmsleep.dialog.Offline
 import com.example.calmsleep.dialog.PlayerDialog
 import com.example.calmsleep.dialog.ViewAllDialog
 import com.example.calmsleep.model.DataMusic
 import com.example.calmsleep.model.MusicUtils
 import com.example.calmsleep.service.MusicService
 import com.example.calmsleep.ui.fragment.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlin.system.exitProcess
 
 
@@ -44,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApp.NOTIFICATION = false
+        MyApp.getMusicDownLoad().clear()
+        MyApp.getMusicDownLoad().addAll(MyApp.getDB().getDownload())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val intent = Intent(applicationContext, MusicService::class.java)
         applicationContext!!.startService(intent)
@@ -53,8 +63,7 @@ class MainActivity : AppCompatActivity() {
         if (!MyApp.ISPLAYING) {
             binding?.rlGone?.visibility = View.GONE
         } else {
-            binding?.rlGone?.visibility = View.VISIBLE
-            binding?.playPauseButton?.setImageResource(R.drawable.baseline_pause_white_48dp)
+            updateData()
         }
         MyApp.getRecently().clear()
         MyApp.getRecently().addAll(MyApp.getDB().getRecently())
@@ -119,6 +128,11 @@ class MainActivity : AppCompatActivity() {
                             bundle.putBoolean("favourites", true)
                         }
                     }
+                    for (j in MyApp.getMusicDownLoad()) {
+                        if (MyApp.ID == j.musicId) {
+                            bundle.putBoolean("download", true)
+                        }
+                    }
                     bundle.putString(
                         "name",
                         MusicUtils.getDataId(MyApp.ID)!!.mp3_title.split("-")[0]
@@ -172,6 +186,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        registerReceiver(broadcastReceiverCheckInternet, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
     private fun rateIntentForUrl(url: String): Intent {
         val intent = Intent(
             Intent.ACTION_VIEW,
@@ -190,7 +209,14 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         applicationContext!!.unbindService(conn!!)
+
         binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(broadcastReceiverCheckInternet)
+        unregisterReceiver(broadcastReceiver)
     }
 
     private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -230,6 +256,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    @SuppressLint("NewApi")
+    private fun isNetworksAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
+            }
+        }
+        return false
+    }
+
 
     fun updateData() {
         for (a in MyApp.getMusicDatabase()) {
@@ -291,6 +339,30 @@ class MainActivity : AppCompatActivity() {
         ) { dialog, _ -> dialog!!.dismiss() }
         alertDialog.show()
     }
+
+    //check internet
+
+    private var broadcastReceiverCheckInternet : BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent) {
+            var v :Offline? = null
+            when (intent.action) {
+                ConnectivityManager.CONNECTIVITY_ACTION -> {
+                    if (isNetworksAvailable(applicationContext)) {
+                        v?.dismiss()
+                    } else {
+
+                        v = Offline("You are OFFLINE !!!",  MyApp.getMusicDownLoad())
+                        v.isCancelable = false
+                        v.show(supportFragmentManager, v.tag)
+
+                    }
+                }
+
+            }
+        }
+    }
+
+
 
     private fun createConnectService() {
         conn = object : ServiceConnection {

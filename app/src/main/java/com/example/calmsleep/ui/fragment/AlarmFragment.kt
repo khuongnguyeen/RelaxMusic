@@ -61,7 +61,6 @@ class AlarmFragment : Fragment() {
             Handler().postDelayed(enableButton, 1000)
         }
         binding?.cvPayDeveloper?.setOnClickListener {
-//            d.show(childFragmentManager, d.tag)
             rateApp()
             binding?.cvPayDeveloper?.isEnabled = false
             val enableButton = Runnable { binding?.cvPayDeveloper?.isEnabled = true }

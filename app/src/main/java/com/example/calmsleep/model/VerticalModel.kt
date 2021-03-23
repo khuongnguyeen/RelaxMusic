@@ -40,7 +40,7 @@ data class MusicOnlineMp3 (
     @PrimaryKey
     var id:String,
     var songName:String,
-    var linkMusic:String,
+    val mp3_thumbnail_b: String,
     var pathOnline:String,
     val musicId:String,
     val albumId: String
