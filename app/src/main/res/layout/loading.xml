@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_layout"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:background="@drawable/home_bg">
 
 
-        <com.airbnb.lottie.LottieAnimationView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/animation_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            app:civ_border_width="@dimen/_1sdp"
+            app:civ_border_color="@color/color_white"
             android:scaleType="centerCrop"
-            app:lottie_rawRes="@raw/wink"
-            app:lottie_autoPlay="true"/>
+            android:src="@drawable/sleep_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <ProgressBar
+            android:id="@+id/pro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:lottie_rawRes="@raw/loading_animation"
             android:layout_below="@+id/animation_view"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"/>
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/animation_view" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

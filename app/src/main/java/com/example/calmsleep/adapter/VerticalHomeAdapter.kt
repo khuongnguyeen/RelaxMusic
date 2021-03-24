@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.example.calmsleep.R
 import com.example.calmsleep.model.Music
 import com.example.calmsleep.ui.adapter.HomeAdapter
+import com.example.calmsleep.ui.fragment.HomeFragment
 import kotlinx.android.synthetic.main.item_veti.view.*
 
-class VerticalHomeAdapter(val context: Context, val inter: IMusic) :
+class VerticalHomeAdapter(val context: Context, val inter: IMusic, val listener: HomeAdapter.OnItemListener) :
     RecyclerView.Adapter<VerticalHomeAdapter.VerticalHomeHolder>() {
     private val viewPool = RecycledViewPool()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VerticalHomeHolder {
 
@@ -35,7 +35,7 @@ class VerticalHomeAdapter(val context: Context, val inter: IMusic) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: VerticalHomeHolder, position: Int) {
-        val homeAdapter = HomeAdapter(context, inter.getData(position).DataMusic)
+        val homeAdapter = HomeAdapter(context, inter.getData(position).DataMusic, listener)
         holder.rc.setHasFixedSize(true)
         holder.rc.setRecycledViewPool(viewPool)
         holder.rc.layoutManager =
@@ -62,11 +62,7 @@ class VerticalHomeAdapter(val context: Context, val inter: IMusic) :
         init {
             btnViewAll.setOnClickListener {
                 inter.onClick(adapterPosition)
-                Log.e(
-                    "VerticalHomeAdapter",
-                    "-----------------ok adapterPosition: $adapterPosition"
-                )
-
+                Log.e("VerticalHomeAdapter", "-----------------ok adapterPosition: $adapterPosition")
                 btnViewAll.isEnabled = false
                 val enableButton = Runnable { btnViewAll.isEnabled = true }
                 Handler().postDelayed(enableButton, 1000)

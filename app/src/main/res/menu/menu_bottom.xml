@@ -26,9 +26,9 @@
         android:title="@string/meditation" />
     <item
         android:id="@+id/action_alarm"
-        android:icon="@drawable/alarm_ic"
+        android:icon="@drawable/settings"
         android:textSize="@dimen/_2sdp"
         android:enabled="true"
-        android:title="@string/alarm" />
+        android:title="@string/setting" />
 
 </menu>

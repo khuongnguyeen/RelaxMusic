@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         var service: MusicService? = null
     }
 
+
+
     @SuppressLint("ResourceAsColor", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +62,6 @@ class MainActivity : AppCompatActivity() {
         getDataLocal()
         createConnectService()
         binding?.animationView!!.speed = 0.05f
-        if (!MyApp.ISPLAYING) {
-            binding?.rlGone?.visibility = View.GONE
-        } else {
-            updateData()
-        }
         MyApp.getRecently().clear()
         MyApp.getRecently().addAll(MyApp.getDB().getRecently())
         sttBar()
@@ -188,6 +185,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        if (!MyApp.ISPLAYING) {
+            binding?.animationView?.pauseAnimation()
+            binding?.rlGone?.visibility = View.GONE
+            binding?.queueButton?.visibility = View.VISIBLE
+            binding?.playPauseButton?.setImageResource(R.drawable.baseline_play_arrow_white_48dp)
+            binding?.playingSong?.text = MyApp.getMusicDatabase()[0].mp3_title.split("-")[0]
+            binding?.playingArtist?.text = MyApp.getMusicDatabase()[0].mp3_artist
+        } else {
+            updateData()
+        }
         registerReceiver(broadcastReceiverCheckInternet, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
@@ -210,13 +217,13 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         applicationContext!!.unbindService(conn!!)
 
+        unregisterReceiver(broadcastReceiverCheckInternet)
+        unregisterReceiver(broadcastReceiver)
         binding = null
     }
 
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(broadcastReceiverCheckInternet)
-        unregisterReceiver(broadcastReceiver)
     }
 
     private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -237,7 +244,6 @@ class MainActivity : AppCompatActivity() {
                     binding?.queueButton?.visibility = View.VISIBLE
                     binding?.playPauseButton?.setImageResource(R.drawable.baseline_play_arrow_white_48dp)
                 }
-
             }
         }
     }
@@ -280,6 +286,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun updateData() {
+        binding?.rlGone?.visibility = View.GONE
         for (a in MyApp.getMusicDatabase()) {
             if (a.id == MyApp.ID) {
                 binding?.playingSong?.text = a.mp3_title.split("-")[0]

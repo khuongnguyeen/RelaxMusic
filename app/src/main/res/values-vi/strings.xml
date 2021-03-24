@@ -57,5 +57,6 @@
     <string name="sleep_sound">Âm thanh khi ngủ</string>
     <string name="view_all">Xem Tất cả</string>
     <string name="save_alarm">SAVE ALARM</string>
-    <string name="setting">CÀI ĐẶT</string>
+    <string name="setting">Cài Đặt</string>
+    <string name="contact_us">Liên hệ với chúng tôi</string>
 </resources>

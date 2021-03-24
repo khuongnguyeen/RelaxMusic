@@ -14,13 +14,16 @@ import com.bumptech.glide.Glide
 import com.example.calmsleep.R
 import com.example.calmsleep.application.MyApp
 import com.example.calmsleep.broadcast.NotificationActionService
-import com.example.calmsleep.databinding.ItemChilBinding
 import com.example.calmsleep.model.DataMusic
 import com.example.calmsleep.model.MusicUtils
 import kotlinx.android.synthetic.main.item_chil.view.*
 
 @Suppress("DEPRECATION")
-class ChillAdapter(val context: Context, private val list: MutableList<DataMusic>) :
+class ChillAdapter(
+    val context: Context,
+    private val list: MutableList<DataMusic>,
+    val listener: OnItemListener
+) :
     RecyclerView.Adapter<ChillAdapter.HomeHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeHolder {
@@ -32,6 +35,12 @@ class ChillAdapter(val context: Context, private val list: MutableList<DataMusic
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HomeHolder, position: Int) {
         holder.albumText.text = list[position].category_name.split(" ")[0]
+        if (list[position].isCheck) {
+            holder.ivPlayItem.setImageResource(R.drawable.baseline_pause_circle_white_24dp)
+        } else {
+            holder.ivPlayItem.setImageResource(R.drawable.baseline_play_circle_white_24dp)
+        }
+
         Glide.with(context)
             .load(list[position].mp3_thumbnail_b)
             .into(holder.sivMusic)
@@ -42,14 +51,11 @@ class ChillAdapter(val context: Context, private val list: MutableList<DataMusic
                 Intent(context, NotificationActionService::class.java).setAction("PLAY_START")
             intent.putExtra("IS_PLAY", list[position].id)
             context.sendBroadcast(intent)
-            holder.ivPlayItem.setImageResource(R.drawable.baseline_pause_circle_white_24dp)
-            val enableButton = Runnable { holder.ivPlayItem.setImageResource(R.drawable.baseline_play_circle_white_24dp) }
-            Handler().postDelayed(enableButton, 2000)
 
             holder.check = false
             for (i in MyApp.getRecently()) {
                 if (i.musicId == MyApp.ID) {
-                    holder. check = true
+                    holder.check = true
                     continue
                 }
             }
@@ -63,15 +69,18 @@ class ChillAdapter(val context: Context, private val list: MutableList<DataMusic
             holder.itemView.isEnabled = false
             val enableButton2 = Runnable { holder.itemView.isEnabled = true }
             Handler().postDelayed(enableButton2, 1000)
+            listener.onItemClick(list[position])
         }
-
-
-
 
 
     }
 
-    class HomeHolder(view : View) : RecyclerView.ViewHolder(view) {
+
+    interface OnItemListener {
+        fun onItemClick(item: DataMusic)
+    }
+
+    class HomeHolder(view: View) : RecyclerView.ViewHolder(view) {
         var check = false
         val sivMusic = view.squareImageView!!
         val albumText = view.album_text!!

@@ -61,7 +61,14 @@ class AlarmFragment : Fragment() {
             Handler().postDelayed(enableButton, 1000)
         }
         binding?.cvPayDeveloper?.setOnClickListener {
-            rateApp()
+            val intent = Intent(
+                Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "walkinsvicky@gmail.com", null
+                )
+            )
+            intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
+            intent.putExtra(Intent.EXTRA_TEXT, "Relax Music")
+            startActivity(Intent.createChooser(intent, "Choose an Email client :"))
             binding?.cvPayDeveloper?.isEnabled = false
             val enableButton = Runnable { binding?.cvPayDeveloper?.isEnabled = true }
             Handler().postDelayed(enableButton, 1000)
@@ -105,7 +112,7 @@ class AlarmFragment : Fragment() {
         }
 
         binding?.ivDownload?.setOnClickListener {
-            val v = Offline("Relax Music",  MyApp.getMusicDownLoad())
+            val v = Offline("Relax Music", MyApp.getMusicDownLoad())
             v.show(childFragmentManager, v.tag)
 
             binding?.ivDownload?.isEnabled = false

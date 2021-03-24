@@ -7,6 +7,8 @@ import android.os.*
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.calmsleep.R
@@ -22,13 +24,20 @@ import java.lang.reflect.Type
 
 
 @Suppress("DEPRECATION")
-class LoadingActivity : AppCompatActivity() {
+class LoadingActivity : AppCompatActivity(), Animation.AnimationListener {
     private var binding: LoadingBinding? = null
     private var mCountDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.loading)
+        val ani = AnimationUtils.loadAnimation(this, R.anim.logo)
+        ani.setAnimationListener(this)
+        binding?.animationView?.startAnimation(ani)
+
+        val ani2 = AnimationUtils.loadAnimation(this, R.anim.loading)
+        ani2.setAnimationListener(this)
+        binding?.pro?.startAnimation(ani2)
         sttBar()
         getMusicData()
 
@@ -105,6 +114,18 @@ class LoadingActivity : AppCompatActivity() {
 
 
         }
+    }
+
+    override fun onAnimationStart(animation: Animation?) {
+
+    }
+
+    override fun onAnimationEnd(animation: Animation?) {
+
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {
+
     }
 
 }

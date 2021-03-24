@@ -56,7 +56,8 @@
     <string name="bed_time_reminder">Bed Time Reminder</string>
     <string name="view_all">View All</string>
     <string name="save_alarm">SAVE ALARM</string>
-    <string name="setting">SETTING</string>
+    <string name="setting">Settings</string>
+    <string name="contact_us">Contact us</string>
 
 
 </resources>

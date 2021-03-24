@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-
 data class DataMusic(
     val cat_id: String? = null,
     val category_image: String,
@@ -14,7 +13,7 @@ data class DataMusic(
     val id: String,
     val mp3_artist: String,
     val mp3_description: String? = null,
-    val categoryId:Int? =null,
+    val categoryId: Int? = null,
     val mp3_duration: String? = null,
     val mp3_thumbnail_b: String,
     val mp3_thumbnail_s: String? = null,
@@ -25,23 +24,24 @@ data class DataMusic(
     val total_download: String? = null,
     val total_rate: String? = null,
     val total_records: String? = null,
-    val total_views: String? = null
+    val total_views: String? = null,
+    var isCheck:Boolean = false
 )
 
 
 data class FavouriteData(
     val id: Int,
-    val musicId:String,
+    val musicId: String,
     val albumId: String
 )
 
 @Entity
-data class MusicOnlineMp3 (
+data class MusicOnlineMp3(
     @PrimaryKey
-    var id:String,
-    var songName:String,
+    var id: String,
+    var songName: String,
     val mp3_thumbnail_b: String,
-    var pathOnline:String,
-    val musicId:String,
+    var pathOnline: String,
+    val musicId: String,
     val albumId: String
 )
